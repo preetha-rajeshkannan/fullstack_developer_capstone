@@ -1,2 +1,2 @@
-# coding-project-template
+PROJECT NAME:
 fullstack_developer_capstone
