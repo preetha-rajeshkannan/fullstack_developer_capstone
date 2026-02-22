@@ -53,6 +53,7 @@ table{
     overflow-wrap: normal;
     margin-top: 1cm;
     align-items: flex-start;
+    position: relative;
   }
 
   .reviewer {
@@ -68,14 +69,14 @@ table{
 
 .emotion_icon {
   align-self: center;
-  position:fixed;
-    width:40px;
-    height:40px;
-    background-color:#0C9;
-    color:#FFF;
-    border-radius:50px;
-    text-align:center;
-    box-shadow: 2px 2px 3px #999;  
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 40px;
+  height: 40px;
+  background-color: #0C9;
+  border-radius: 50px;
+  box-shadow: 2px 2px 3px #999;
 }
 
 .review_icon {
