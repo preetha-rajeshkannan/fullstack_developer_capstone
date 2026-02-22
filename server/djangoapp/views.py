@@ -106,24 +106,31 @@ def get_dealerships(request, state="All"):
 # Create a `get_dealer_reviews` view to render the reviews of a dealer
 # def get_dealer_reviews(request,dealer_id):
 # ...
+from django.http import JsonResponse
+
 def get_dealer_reviews(request, dealer_id):
-    if dealer_id:
-        endpoint = "/fetchReviews/dealer/" + str(dealer_id)
-        reviews = get_request(endpoint)
-
-        for review_detail in reviews:
-            response = analyze_review_sentiments(review_detail['review'])
-            print(response)
-
-            if response and 'sentiment' in response:
-                review_detail['sentiment'] = response['sentiment']
-            else:
-                # Fallback when sentiment service is unavailable
-                review_detail['sentiment'] = 'neutral'
-
-        return JsonResponse({"status": 200, "reviews": reviews})
-    else:
+    if not dealer_id:
         return JsonResponse({"status": 400, "message": "Bad Request"})
+
+    endpoint = f"/fetchReviews/dealer/{dealer_id}"
+    reviews = get_request(endpoint)
+
+    # 🔥 CRITICAL FIX
+    if reviews is None:
+        reviews = []
+
+    for review_detail in reviews:
+        response = analyze_review_sentiments(review_detail.get('review', ''))
+
+        if response and 'sentiment' in response:
+            review_detail['sentiment'] = response['sentiment']
+        else:
+            review_detail['sentiment'] = 'neutral'
+
+    return JsonResponse({
+        "status": 200,
+        "reviews": reviews
+    })
 # Create a `get_dealer_details` view to render the dealer details
 # def get_dealer_details(request, dealer_id):
 # ...
